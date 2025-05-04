@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClinIQ | Plataforma de Conhecimento Médico</title>
+    <style>
+        :root {
+            --primary-color: #0077cc;
+            --secondary-color: #2ecc71;
+            --dark-color: #333;
+            --light-color: #f4f4f4;
+            --danger-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --border-radius: 5px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            
+            /* Variáveis para o modo claro (padrão) */
+            --bg-color: #f9f9f9;
+            --text-color: #333;
+            --card-bg: #fff;
+            --header-bg: #fff;
+            --border-color: #ddd;
+        }
+
+        /* Modo escuro */
+        .dark-mode {
+            --bg-color: #1a1a2e;
+            --text-color: #f0f0f0;
+            --card-bg: #16213e;
+            --header-bg: #0f3460;
+            --border-color: #374151;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--header-bg);
+            box-shadow: var(--box-shadow);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: var(--secondary-color);
+        }
+
+        nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-item, .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .nav-item {
+            color: var(--text-color);
+        }
+
+        .nav-item:hover {
+            background-color: rgba(0, 119, 204, 0.1);
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #005fa3;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #25a25a;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .settings-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .theme-switch {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .language-selector {
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        main {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        #landingPage {
+            display: block;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-bottom: 2rem;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem auto;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .search-results {
+            margin-top: 1rem;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            display: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        /* Formulários */
+        .form-container {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .form-link {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .form-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .modal {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        /* Quiz */
+        .quiz-container {
+            padding: 1rem;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-question {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .quiz-option {
+            background-color: var(--bg-color);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .quiz-option:hover {
+            background-color: rgba(0, 119, 204, 0.1);
+        }
+
+        .quiz-option.correct {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .quiz-option.incorrect {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        /* Calculadora Médica */
+        .calculator-tabs {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .calculator-tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .calculator-tab.active {
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .calculator-content {
+            display: none;
+        }
+
+        .calculator-content.active {
+            display: block;
+        }
+
+        .calculator-result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: var(--bg-color);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        /* História Clínica */
+        .clinical-history-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .history-section {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .history-section h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .saved-histories {
+            margin-top: 2rem;
+        }
+
+        .history-card {
+            background-color: var(--card-bg);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .history-card:hover {
+            box-shadow: var(--box-shadow);
+        }
+
+        /* Botão Voltar */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--primary-color);
+            background-color: transparent;
+            transition: var(--transition);
+        }
+        
+        .back-button:hover {
+            background-color: rgba(0, 119, 204, 0.1);
+        }
+        
+        .back-button i {
+            margin-right: 0.5rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .quiz-options {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                background-color: var(--card-bg);
+                box-shadow: var(--box-shadow);
+                border-radius: var(--border-radius);
+                padding: 1rem;
+                display: none;
+            }
+
+            nav.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: var(--text-color);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .form-footer {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo" id="logoHome">Clin<span>IQ</span></div>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            <nav id="mainNav">
+                <a href="#" class="nav-item" data-lang="home" data-target="landingPage">Início</a>
+                <a href="#" class="nav-item" data-lang="quiz" data-target="quizPage">Quiz</a>
+                <a href="#" class="nav-item" data-lang="calculator" data-target="calculatorPage">Calculadora</a>
+                <a href="#" class="nav-item" data-lang="history" data-target="clinicalHistoryPage">História Clínica</a>
+                <button id="loginBtn" class="btn" data-lang="login">Entrar</button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="settings-bar">
+            <div class="theme-switch">
+                <span data-lang="theme">Tema</span>
+                <button id="themeToggle" class="btn">☀️</button>
+            </div>
+            <select id="languageSelector" class="language-selector">
+                <option value="pt">Português</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+            </select>
+        </div>
+
+        <!-- Página inicial -->
+        <main id="landingPage">
+            <div class="hero">
+                <h1 data-lang="hero-title">Bem-vindo ao ClinIQ</h1>
+                <p data-lang="hero-subtitle">A plataforma inteligente para estudantes e profissionais de medicina.</p>
+                <div class="search-bar">
+                    <input type="text" id="medicalSearch" placeholder="Pesquise termos médicos, doenças, sintomas..." data-lang="search-placeholder">
+                    <div class="search-results" id="searchResults"></div>
+                </div>
+            </div>
+            <div class="features">
+                <div class="feature-card" data-target="quizPage">
+                    <div class="feature-icon">📝</div>
+                    <h3 data-lang="quiz-feature">Quiz Médico</h3>
+                    <p data-lang="quiz-description">Teste seus conhecimentos com perguntas interativas no estilo "Quem Quer Ser Milionário".</p>
+                </div>
+                <div class="feature-card" data-target="calculatorPage">
+                    <div class="feature-icon">🧮</div>
+                    <h3 data-lang="calculator-feature">Calculadora Médica</h3>
+                    <p data-lang="calculator-description">Calcule o IMC e dosagens de medicamentos com precisão.</p>
+                </div>
+                <div class="feature-card" data-target="clinicalHistoryPage">
+                    <div class="feature-icon">📋</div>
+                    <h3 data-lang="history-feature">História Clínica</h3>
+                    <p data-lang="history-description">Crie e gerencie histórias clínicas completas com diagnóstico automático.</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Página de Quiz -->
+        <main id="quizPage">
+            <button class="back-button" id="quizBackBtn"><i>←</i> <span data-lang="back-button">Voltar</span></button>
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <h2 data-lang="quiz-title">Quiz Médico</h2>
+                    <p data-lang="quiz-instructions">Selecione a resposta correta para cada pergunta.</p>
+                </div>
+                <div class="quiz-question">
+                    <h3 id="questionText">Carregando pergunta...</h3>
+                </div>
+                <div class="quiz-options" id="quizOptions">
+                    <!-- Opções geradas dinamicamente -->
+                </div>
+                <div class="quiz-controls">
+                    <span id="quizProgress">Pergunta 1/10</span>
+                    <button id="nextQuestion" class="btn" data-lang="next-question">Próxima</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Página de Calculadora -->
+        <main id="calculatorPage">
+            <button class="back-button" id="calculatorBackBtn"><i>←</i> <span data-lang="back-button">Voltar</span></button>
+            <h2 class="form-title" data-lang="calculator-title">Calculadora Médica</h2>
+            <div class="calculator-tabs">
+                <div class="calculator-tab active" data-tab="imc" data-lang="imc-tab">IMC</div>
+                <div class="calculator-tab" data-tab="dosage" data-lang="dosage-tab">Dosagem</div>
+            </div>
+
+            <div class="calculator-content active" id="imcCalculator">
+                <div class="form-container">
+                    <div class="form-group">
+                        <label for="weight" data-lang="weight">Peso (kg)</label>
+                        <input type="number" id="weight" step="0.1" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="height" data-lang="height">Altura (cm)</label>
+                        <input type="number" id="height" step="0.1" min="0">
+                    </div>
+                    <button id="calculateImc" class="btn" data-lang="calculate">Calcular</button>
+                    <div class="calculator-result" id="imcResult"></div>
+                </div>
+            </div>
+
+            <div class="calculator-content" id="dosageCalculator">
+                <div class="form-container">
+                    <div class="form-group">
+                        <label for="medication" data-lang="medication">Medicamento</label>
+                        <select id="medication">
+                            <option value="paracetamol" data-lang="paracetamol">Paracetamol</option>
+                            <option value="ibuprofen" data-lang="ibuprofen">Ibuprofeno</option>
+                            <option value="amoxicillin" data-lang="amoxicillin">Amoxicilina</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="patientWeight" data-lang="patient-weight">Peso do paciente (kg)</label>
+                        <input type="number" id="patientWeight" step="0.1" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="patientAge" data-lang="patient-age">Idade do paciente (anos)</label>
+                        <input type="number" id="patientAge" min="0">
+                    </div>
+                    <button id="calculateDosage" class="btn" data-lang="calculate">Calcular</button>
+                    <div class="calculator-result" id="dosageResult"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Página de História Clínica -->
+        <main id="clinicalHistoryPage">
+            <button class="back-button" id="historyBackBtn"><i>←</i> <span data-lang="back-button">Voltar</span></button>
+            <h2 class="form-title" data-lang="clinical-history-title">História Clínica</h2>
+            
+            <div class="clinical-history-form">
+                <div class="history-section">
+                    <h3 data-lang="patient-info">Identificação do Paciente</h3>
+                    <div class="form-group">
+                        <label for="patientName" data-lang="patient-name">Nome do Paciente</label>
+                        <input type="text" id="patientName">
+                    </div>
+                    <div class="form-group">
+                        <label for="patientAge2" data-lang="patient-age">Idade</label>
+                        <input type="number" id="patientAge2" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="patientGender" data-lang="patient-gender">Gênero</label>
+                        <select id="patientGender">
+                            <option value="male" data-lang="male">Masculino</option>
+                            <option value="female" data-lang="female">Feminino</option>
+                            <option value="other" data-lang="other">Outro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="history-section">
+                    <h3 data-lang="main-complaint">Queixa Principal</h3>
+                    <div class="form-group">
+                        <textarea id="mainComplaint"></textarea>
+                    </div>
+                </div>
+
+                <div class="history-section">
+                    <h3 data-lang="current-illness">História da Doença Atual</h3>
+                    <div class="form-group">
+                        <textarea id="currentIllness"></textarea>
+                    </div>
+                </div>
+
+                <div class="history-section">
+                    <h3 data-lang="past-history">História Patológica Pregressa</h3>
+                    <div class="form-group">
+                        <textarea id="pastHistory"></textarea>
+                    </div>
+                </div>
+
+                <div class="history-section">
+                    <h3 data-lang="family-history">História Familiar</h3>
+                    <div class="form-group">
+                        <textarea id="familyHistory"></textarea>
+                    </div>
+                </div>
+
+                <div class="history-section">
+                    <h3 data-lang="personal-history">História Pessoal</h3>
+                    <div class="form-group">
+                        <textarea id="personalHistory"></textarea>
+                    </div>
+                </div>
+
+                <button id="generateDiagnosis" class="btn" data-lang="generate-diagnosis">Gerar Diagnóstico</button>
+                <button id="saveHistory" class="btn btn-secondary" data-lang="save-history">Salvar História</button>
+
+                <div class="history-section" id="diagnosisResults" style="display: none;">
+                    <h3 data-lang="diagnosis-results">Resultados do Diagnóstico</h3>
+                    <div class="form-group">
+                        <label data-lang="provisional-diagnosis">Diagnóstico Provisório</label>
+                        <p id="provisionalDiagnosis"></p>
+                    </div>
+                    <div class="form-group">
+                        <label data-lang="definitive-diagnosis">Diagnóstico Definitivo</label>
+                        <p id="definitiveDiagnosis"></p>
+                    </div>
+                    <div class="form-group">
+                        <label data-lang="differential-diagnosis">Diagnóstico Diferencial</label>
+                        <p id="differentialDiagnosis"></p>
+                    </div>
+                    <div class="form-group">
+                        <label data-lang="diagnostic-aids">Meios Auxiliares de Diagnóstico</label>
+                        <p id="diagnosticAids"></p>
+                    </div>
+                    <div class="form-group">
+                        <label data-lang="treatment">Tratamento</label>
+                        <p id="treatment"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="saved-histories">
+                <h3 data-lang="saved-histories">Histórias Guardadas</h3>
+                <div id="historiesList">
+                    <!-- Histórias salvas serão mostradas aqui -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Login/Cadastro -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <button class="modal-close" id="closeLoginModal">×</button>
+            <div id="loginForm">
+                <h2 class="form-title" data-lang="login-title">Entrar</h2>
+                <div class="form-group">
+                    <label for="loginEmail" data-lang="email">E-mail</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword" data-lang="password">Senha</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div class="form-footer">
+                    <a href="#" id="showRegisterForm" class="form-link" data-lang="no-account">Não tem conta? Cadastre-se</a>
+                    <button id="submitLogin" class="btn" data-lang="login">Entrar</button>
+                </div>
+            </div>
+            <div id="registerForm" style="display: none;">
+                <h2 class="form-title" data-lang="register-title">Cadastro</h2>
+                <div class="form-group">
+                    <label for="registerName" data-lang="name">Nome</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail" data-lang="email">E-mail</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword" data-lang="password">Senha</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword" data-lang="confirm-password">Confirmar Senha</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+                <div class="form-footer">
+                    <a href="#" id="showLoginForm" class="form-link" data-lang="has-account">Já tem conta? Faça login</a>
+                    <button id="submitRegister" class="btn" data-lang="register">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de exibição de histórico clínico -->
+    <div class="modal-overlay" id="historyViewModal">
+        <div class="modal">
+            <button class="modal-close" id="closeHistoryViewModal">×</button>
+            <h2 class="form-title" data-lang="history-details">Detalhes da História Clínica</h2>
+            <div id="historyViewContent">
+                <!-- Conteúdo do histórico será carregado aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuração de idiomas
+        const translations = {
+            pt: {
+                "home": "Início",
+                "quiz": "Quiz",
+                "calculator": "Calculadora",
+                "history": "História Clínica",
+                "login": "Entrar",
+                "theme": "Tema",
+                "hero-title": "Bem-vindo ao ClinIQ",
+                "hero-subtitle": "A plataforma inteligente para estudantes e profissionais de medicina.",
+                "search-placeholder": "Pesquise termos médicos, doenças, sintomas...",
+                "quiz-feature": "Quiz Médico",
+                "quiz-description": "Teste seus conhecimentos com perguntas interativas no estilo 'Quem Quer Ser Milionário'.",
+                "calculator-feature": "Calculadora Médica",
+                "calculator-description": "Calcule o IMC e dosagens de medicamentos com precisão.",
+                "history-feature": "História Clínica",
+                "history-description": "Crie e gerencie histórias clínicas completas com diagnóstico automático.",
+                "quiz-title": "Quiz Médico",
+                "quiz-instructions": "Selecione a resposta correta para cada pergunta.",
+                "next-question": "Próxima",
+                "calculator-title": "Calculadora Médica",
+                "imc-tab": "IMC",
+                "dosage-tab": "Dosagem",
+                "weight": "Peso (kg)",
+                "height": "Altura (cm)",
+                "calculate": "Calcular",
+                "medication": "Medicamento",
+                "paracetamol": "Paracetamol",
+                "ibuprofen": "Ibuprofeno",
+                "amoxicillin": "Amoxicilina",
+                "patient-weight": "Peso do paciente (kg)",
+                "patient-age": "Idade do paciente (anos)",
+                "clinical-history-title": "História Clínica",
+                "patient-info": "Identificação do Paciente",
+                "patient-name": "Nome do Paciente",
+                "patient-gender": "Gênero",
+                "male": "Masculino",
+                "female": "Feminino",
+                "other": "Outro",
+                "main-complaint": "Queixa Principal",
+                "current-illness": "História da Doença Atual",
+                "past-history": "História Patológica Pregressa",
+                "family-history": "História Familiar",
+                "personal-history": "História Pessoal",
+                "generate-diagnosis": "Gerar Diagnóstico",
+                "save-history": "Salvar História",
+                "diagnosis-results": "Resultados do Diagnóstico",
+                "provisional-diagnosis": "Diagnóstico Provisório",
+                "definitive-diagnosis": "Diagnóstico Definitivo",
+                "differential-diagnosis": "Diagnóstico Diferencial",
+                "diagnostic-aids": "Meios Auxiliares de Diagnóstico",
+                "treatment": "Tratamento",
+                "saved-histories": "Histórias Guardadas",
+                "login-title": "Entrar",
+                "email": "E-mail",
+                "password": "Senha",
+                "no-account": "Não tem conta? Cadastre-se",
+                "register-title": "Cadastro",
+                "name": "Nome",
+                "confirm-password": "Confirmar Senha",
+                "has-account": "Já tem conta? Faça login",
+                "register": "Cadastrar",
+                "history-details": "Detalhes da História Clínica",
+                "back-button": "Voltar"
+            },
+            en: {
+                "home": "Home",
+                "quiz": "Quiz",
+                "calculator": "Calculator",
+                "history": "Clinical History",
+                "login": "Login",
+                "theme": "Theme",
+                "hero-title": "Welcome to ClinIQ",
+                "hero-subtitle": "The intelligent platform for medical students and professionals.",
+                "search-placeholder": "Search medical terms, diseases, symptoms...",
+                "quiz-feature": "Medical Quiz",
+                "quiz-description": "Test your knowledge with interactive questions in the 'Who Wants to Be a Millionaire' style.",
+                "calculator-feature": "Medical Calculator",
+                "calculator-description": "Calculate BMI and medication dosages with precision.",
+                "history-feature": "Clinical History",
+                "history-description": "Create and manage complete clinical histories with automatic diagnosis.",
+                "quiz-title": "Medical Quiz",
+                "quiz-instructions": "Select the correct answer for each question.",
+                "next-question": "Next",
+                "calculator-title": "Medical Calculator",
+                "imc-tab": "BMI",
+                "dosage-tab": "Dosage",
+                "weight": "Weight (kg)",
+                "height": "Height (cm)",
+                "calculate": "Calculate",
+                "medication": "Medication",
+                "paracetamol": "Paracetamol",
+                "ibuprofen": "Ibuprofen",
+                "amoxicillin": "Amoxicillin",
+                "patient-weight": "Patient weight (kg)",
+                "patient-age": "Patient age (years)",
+                "clinical-history-title": "Clinical History",
+                "patient-info": "Patient Identification",
+                "patient-name": "Patient Name",
+                "patient-gender": "Gender",
+                "male": "Male",
+                "female": "Female",
+                "other": "Other",
+                "main-complaint": "Main Complaint",
+                "current-illness": "History of Present Illness",
+                "past-history": "Past Medical History",
+                "family-history": "Family History",
+                "personal-history": "Personal History",
+                "generate-diagnosis": "Generate Diagnosis",
+                "save-history": "Save History",
+                "diagnosis-results": "Diagnosis Results",
+                "provisional-diagnosis": "Provisional Diagnosis",
+                "definitive-diagnosis": "Definitive Diagnosis",
+                "differential-diagnosis": "Differential Diagnosis",
+                "diagnostic-aids": "Diagnostic Aids",
+                "treatment": "Treatment",
+                "saved-histories": "Saved Histories",
+                "login-title": "Login",
+                "email": "Email",
+                "password": "Password",
+                "no-account": "Don't have an account? Register",
+                "register-title": "Register",
+                "name": "Name",
+                "confirm-password": "Confirm Password",
+                "has-account": "Already have an account? Login",
+                "register": "Register",
+                "history-details": "Clinical History Details",
+                "back-button": "Back"
+            },
+            es: {
+                "home": "Inicio",
+                "quiz": "Cuestionario",
+                "calculator": "Calculadora",
+                "history": "Historia Clínica",
+                "login": "Iniciar Sesión",
+                "theme": "Tema",
+                "hero-title": "Bienvenido a ClinIQ",
+                "hero-subtitle": "La plataforma inteligente para estudiantes y profesionales de medicina.",
+                "search-placeholder": "Buscar términos médicos, enfermedades, síntomas...",
+                "quiz-feature": "Cuestionario Médico",
+                "quiz-description": "Ponga a prueba sus conocimientos con preguntas interactivas al estilo '¿Quién Quiere Ser Millonario?'.",
+                "calculator-feature": "Calculadora Médica",
+                "calculator-description": "Calcule el IMC y dosis de medicamentos con precisión.",
+                "history-feature": "Historia Clínica",
+                "history-description": "Cree y gestione historias clínicas completas con diagnóstico automático.",
+                "quiz-title": "Cuestionario Médico",
+                "quiz-instructions": "Seleccione la respuesta correcta para cada pregunta.",
+                "next-question": "Siguiente",
+                "calculator-title": "Calculadora Médica",
+                "imc-tab": "IMC",
+                "dosage-tab": "Dosificación",
+                "weight": "Peso (kg)",
+                "height": "Altura (cm)",
+                "calculate": "Calcular",
+                "medication": "Medicamento",
+                "paracetamol": "Paracetamol",
+                "ibuprofen": "Ibuprofeno",
+                "amoxicillin": "Amoxicilina",
+                "patient-weight": "Peso del paciente (kg)",
+                "patient-age": "Edad del paciente (años)",
+                "clinical-history-title": "Historia Clínica",
+                "patient-info": "Identificación del Paciente",
+                "patient-name": "Nombre del Paciente",
+                "patient-gender": "Género",
+                "male": "Masculino",
+                "female": "Femenino",
+                "other": "Otro",
+                "main-complaint": "Queja Principal",
+                "current-illness": "Historia de la Enfermedad Actual",
+                "past-history": "Historia Patológica Previa",
+                "family-history": "Historia Familiar",
+                "personal-history": "Historia Personal",
+                "generate-diagnosis": "Generar Diagnóstico",
+                "save-history": "Guardar Historia",
+                "diagnosis-results": "Resultados del Diagnóstico",
+                "provisional-diagnosis": "Diagnóstico Provisional",
+                "definitive-diagnosis": "Diagnóstico Definitivo",
+                "differential-diagnosis": "Diagnóstico Diferencial",
+                "diagnostic-aids": "Medios Auxiliares de Diagnóstico",
+                "treatment": "Tratamiento",
+                "saved-histories": "Historias Guardadas",
+                "login-title": "Iniciar Sesión",
+                "email": "Correo Electrónico",
+                "password": "Contraseña",
+                "no-account": "¿No tiene cuenta? Regístrese",
+                "register-title": "Registro",
+                "name": "Nombre",
+                "confirm-password": "Confirmar Contraseña",
+                "has-account": "¿Ya tiene cuenta? Inicie sesión",
+                "register": "Registrarse",
+                "history-details": "Detalles de la Historia Clínica",
+                "back-button": "Volver"
+            },
+            fr: {
+                "home": "Accueil",
+                "quiz": "Quiz",
+                "calculator": "Calculatrice",
+                "history": "Histoire Clinique",
+                "login": "Connexion",
+                "theme": "Thème",
+                "hero-title": "Bienvenue sur ClinIQ",
+                "hero-subtitle": "La plateforme intelligente pour les étudiants et professionnels de la médecine.",
+                "search-placeholder": "Rechercher des termes médicaux, maladies, symptômes...",
+                "quiz-feature": "Quiz Médical",
+                "quiz-description": "Testez vos connaissances avec des questions interactives dans le style 'Qui Veut Gagner des Millions'.",
+                "calculator-feature": "Calculatrice Médicale",
+                "calculator-description": "Calculez l'IMC et les dosages de médicaments avec précision.",
+                "history-feature": "Histoire Clinique",
+                "history-description": "Créez et gérez des histoires cliniques complètes avec diagnostic automatique.",
+                "quiz-title": "Quiz Médical",
+                "quiz-instructions": "Sélectionnez la bonne réponse pour chaque question.",
+                "next-question": "Suivant",
+                "calculator-title": "Calculatrice Médicale",
+                "imc-tab": "IMC",
+                "dosage-tab": "Dosage",
+                "weight": "Poids (kg)",
+                "height": "Taille (cm)",
+                "calculate": "Calculer",
+                "medication": "Médicament",
+                "paracetamol": "Paracétamol",
+                "ibuprofen": "Ibuprofène",
+                "amoxicillin": "Amoxicilline",
+                "patient-weight": "Poids du patient (kg)",
+                "patient-age": "Âge du patient (ans)",
+                "clinical-history-title": "Histoire Clinique",
+                "patient-info": "Identification du Patient",
+                "patient-name": "Nom du Patient",
+                "patient-gender": "Genre",
+                "male": "Masculin",
+                "female": "Féminin",
+                "other": "Autre",
+                "main-complaint": "Plainte Principale",
+                "current-illness": "Histoire de la Maladie Actuelle",
+                "past-history": "Antécédents Médicaux",
+                "family-history": "Histoire Familiale",
+                "personal-history": "Histoire Personnelle",
+                "generate-diagnosis": "Générer Diagnostic",
+                "save-history": "Sauvegarder Histoire",
+                "diagnosis-results": "Résultats du Diagnostic",
+                "provisional-diagnosis": "Diagnostic Provisoire",
+                "definitive-diagnosis": "Diagnostic Définitif",
+                "differential-diagnosis": "Diagnostic Différentiel",
+                "diagnostic-aids": "Moyens Auxiliaires de Diagnostic",
+                "treatment": "Traitement",
+                "saved-histories": "Histoires Sauvegardées",
+                "login-title": "Connexion",
+                "email": "E-mail",
+                "password": "Mot de passe",
+                "no-account": "Pas de compte? Inscrivez-vous",
+                "register-title": "Inscription",
+                "name": "Nom",
+                "confirm-password": "Confirmer le Mot de passe",
+                "has-account": "Déjà un compte? Connectez-vous",
+                "register": "S'inscrire",
+                "history-details": "Détails de l'Histoire Clinique",
+                "back-button": "Retour"
+            }
+        };
+
+        // Base de dados de conhecimento médico ampliada
+        const medicalDatabase = {
+            "dengue": {
+                definition: "Doença viral transmitida pelo mosquito Aedes aegypti, caracterizada por febre alta, dores musculares e articulares, erupções cutâneas e fadiga.",
+                symptoms: "Febre alta (40°C), dores intensas nos músculos e articulações, dor retro-orbital, náuseas, vômitos, erupções cutâneas, sangramento de mucosas, fadiga.",
+                diagnosis: "Baseado em sintomas clínicos, hemograma (plaquetopenia, leucopenia), testes sorológicos para detecção de anticorpos (IgM e IgG) e PCR para detecção do vírus.",
+                treatment: "Tratamento de suporte: repouso, hidratação oral ou intravenosa, analgésicos (paracetamol). Evitar anti-inflamatórios não esteroides. Monitoramento de sinais de alarme e casos graves.",
+                observations: "A dengue grave (anteriormente conhecida como dengue hemorrágica) pode levar a choque circulatório, sangramento grave e falência de órgãos. Requer hospitalização imediata."
+            },
+            "malaria": {
+                definition: "Doença infecciosa causada por protozoários do gênero Plasmodium, transmitidos pela picada do mosquito Anopheles feminino.",
+                symptoms: "Ciclos de febre alta alternados com calafrios e sudorese intensa, dor de cabeça, náuseas, vômitos, dor muscular e abdominal, anemia, icterícia.",
+                diagnosis: "Gota espessa e esfregaço sanguíneo para visualização do parasita, testes rápidos de diagnóstico (RDTs), PCR em casos específicos.",
+                treatment: "Varia de acordo com a espécie de Plasmodium e região geográfica. Geralmente inclui: cloroquina, artemisina e derivados, mefloquina, primaquina, atovaquona-proguanil, dependendo da resistência local.",
+                observations: "A malária falciparum é a mais grave e potencialmente fatal. Profilaxia com medicamentos é recomendada para viajantes a áreas endêmicas, junto com medidas de proteção contra mosquitos."
+            },
+            "hipertensão": {
+                definition: "Condição crônica caracterizada por elevação sustentada da pressão arterial acima de 140/90 mmHg. Importante fator de risco para doenças cardiovasculares.",
+                symptoms: "Geralmente assintomática (por isso chamada de 'assassina silenciosa'). Em casos graves: dor de cabeça, tontura, visão turva, epistaxe, dispneia aos esforços.",
+                diagnosis: "Medições múltiplas da pressão arterial em diferentes ocasiões. Monitoramento ambulatorial da pressão arterial (MAPA) ou monitorização residencial da pressão arterial (MRPA) podem ser necessários.",
+                treatment: "Mudanças no estilo de vida: dieta com restrição de sal, exercícios regulares, redução do consumo de álcool, perda de peso. Medicamentos: diuréticos, inibidores da ECA, bloqueadores do receptor de angiotensina II, bloqueadores dos canais de cálcio, betabloqueadores.",
+                observations: "Condição crônica que requer tratamento contínuo e acompanhamento médico regular. Hipertensão não controlada pode levar a AVE, infarto do miocárdio, insuficiência cardíaca, doença renal crônica e retinopatia."
+            },
+            "diabetes": {
+                definition: "Grupo de doenças metabólicas caracterizadas por hiperglicemia resultante de defeitos na secreção de insulina, ação da insulina ou ambos.",
+                symptoms: "Poliúria, polidipsia, polifagia, perda de peso inexplicada, fadiga, visão turva, infecções recorrentes, feridas de cicatrização lenta.",
+                diagnosis: "Glicemia de jejum ≥ 126 mg/dL, hemoglobina glicada (HbA1c) ≥ 6,5%, teste de tolerância à glicose oral com resultado ≥ 200 mg/dL após 2 horas, ou glicemia casual ≥ 200 mg/dL em paciente com sintomas.",
+                treatment: "Diabetes tipo 1: insulinoterapia, educação para autogestão. Diabetes tipo 2: mudanças no estilo de vida (dieta, exercício, perda de peso), metformina como primeira linha, outros antidiabéticos orais, agonistas do GLP-1, insulina quando necessário.",
+                observations: "Controle adequado previne complicações a longo prazo: retinopatia, nefropatia, neuropatia, doença cardiovascular. Educação do paciente é fundamental para o sucesso do tratamento."
+            },
+            "tuberculose": {
+                definition: "Doença infecciosa causada pela bactéria Mycobacterium tuberculosis, afetando principalmente os pulmões, mas podendo atingir outros órgãos.",
+                symptoms: "Tosse persistente (mais de 3 semanas), produção de escarro (que pode conter sangue), febre vespertina, suores noturnos, perda de peso, fadiga, dor torácica, dispneia.",
+                diagnosis: "Teste de baciloscopia direta no escarro, cultura para micobactérias, teste molecular (GeneXpert MTB/RIF), teste tuberculínico (PPD), radiografia de tórax, histopatológico em TB extrapulmonar.",
+                treatment: "Esquema básico para adultos: Fase intensiva (2 meses): rifampicina, isoniazida, pirazinamida e etambutol. Fase de manutenção (4 meses): rifampicina e isoniazida. Tratamento diretamente observado (TDO) é recomendado.",
+                observations: "O tratamento completo é essencial para evitar resistência às drogas. Tuberculose multirresistente (TB-MDR) é um desafio crescente. Investigação de contactantes é fundamental para controle da transmissão."
+            },
+            "pneumonia": {
+                definition: "Infecção que causa inflamação nos alvéolos pulmonares, podendo ser causada por bactérias, vírus ou fungos.",
+                symptoms: "Tosse produtiva, febre, calafrios, dispneia, dor torácica, taquipneia, mal-estar, fadiga.",
+                diagnosis: "Exame físico, radiografia de tórax, hemograma, hemoculturas, cultura de escarro, PCR para patógenos específicos.",
+                treatment: "Antibioticoterapia empírica inicial baseada na gravidade e epidemiologia local. Suporte respiratório quando necessário. Adequação terapêutica conforme resultado de culturas.",
+                observations: "A pneumonia adquirida na comunidade (PAC) difere da pneumonia nosocomial em termos de agentes etiológicos e abordagem terapêutica. O escore CURB-65 ou PSI ajuda a determinar a gravidade e necessidade de internação."
+            },
+            "asma": {
+                definition: "Doença inflamatória crônica das vias aéreas caracterizada por hiperreatividade brônquica e obstrução variável ao fluxo aéreo.",
+                symptoms: "Sibilância, dispneia, tosse (frequentemente noturna), aperto no peito, sintomas que pioram com exercício, exposição a alérgenos ou infecções respiratórias.",
+                diagnosis: "História clínica, espirometria com teste de broncodilatação, teste de provocação brônquica, medidas seriadas de pico de fluxo expiratório.",
+                treatment: "Controle ambiental, broncodilatadores de curta ação para resgate, corticosteroides inalatórios como tratamento de manutenção, broncodilatadores de longa ação, modificadores de leucotrienos, anticorpos monoclonais em casos graves.",
+                observations: "Classificada em graus de controle (controlada, parcialmente controlada, não controlada) para guiar ajustes terapêuticos. Plano de ação escrito é recomendado para manejo de crises."
+            },
+            "infarto": {
+                definition: "Necrose do miocárdio devido à isquemia prolongada, geralmente resultante de obstrução coronariana por trombo sobreposto a placa aterosclerótica.",
+                symptoms: "Dor torácica intensa (em aperto, peso, queimação), com irradiação para braço esquerdo, mandíbula ou dorso, dispneia, náuseas, vômitos, sudorese, palpitações, ansiedade, sensação de morte iminente.",
+                diagnosis: "ECG (elevação do segmento ST ou novo bloqueio de ramo esquerdo), biomarcadores cardíacos (troponina, CK-MB), ecocardiograma, cinecoronariografia.",
+                treatment: "Reperfusão miocárdica (angioplastia primária ou trombólise), antiagregantes plaquetários, anticoagulantes, estatinas, betabloqueadores, inibidores da ECA, analgesia, oxigenoterapia se hipoxemia.",
+                observations: "Tempo é miocárdio: quanto mais rápido o tratamento, melhores os resultados. O infarto sem elevação de ST (IAMSSST) tem abordagem terapêutica e prognóstico diferentes do infarto com elevação de ST (IAMCSST)."
+            },
+            "avc": {
+                definition: "Interrupção súbita do suprimento sanguíneo cerebral (AVC isquêmico) ou ruptura de vaso sanguíneo no cérebro (AVC hemorrágico), causando déficit neurológico focal.",
+                symptoms: "Fraqueza ou paralisia súbita em face, braço ou perna (especialmente de um lado do corpo), dificuldade para falar ou compreender, confusão, turvação visual, cefaleia intensa, vertigem, dificuldade para caminhar, perda de equilíbrio ou coordenação.",
+                diagnosis: "Exame neurológico (escala NIHSS), neuroimagem (TC de crânio sem contraste, RM cerebral), angiografia cerebral, doppler de carótidas e vertebrais, investigação cardíaca.",
+                treatment: "AVC isquêmico: trombolítico (rtPA) até 4,5h do início dos sintomas, trombectomia mecânica em casos selecionados. AVC hemorrágico: controle de PA, reversão de anticoagulação, drenagem neurocirúrgica quando indicado. Reabilitação precoce para ambos.",
+                observations: "O reconhecimento precoce dos sinais de AVC é crucial. A estratégia 'tempo é cérebro' enfatiza a urgência no tratamento. Prevenção secundária inclui antiagregantes/anticoagulantes, estatinas, controle de fatores de risco."
+            },
+            "alzheimer": {
+                definition: "Doença neurodegenerativa progressiva caracterizada pela formação de placas amiloides e emaranhados neurofibrilares no cérebro, levando à perda de função neural.",
+                symptoms: "Perda progressiva de memória (inicialmente de fatos recentes), confusão, desorientação, mudanças de personalidade, dificuldade com linguagem e raciocínio abstrato, perda da capacidade de executar atividades diárias.",
+                diagnosis: "História clínica detalhada, testes neuropsicológicos, exclusão de outras causas de demência, biomarcadores no LCR (beta-amiloide, tau), neuroimagem (atrofia hipocampal em RM, PET com marcadores de amiloide).",
+                treatment: "Inibidores da colinesterase (donepezil, rivastigmina, galantamina), memantina. Manejo comportamental, terapia ocupacional, suporte familiar, adequação ambiental.",
+                observations: "Não existe tratamento curativo. Terapias emergentes focam na remoção de beta-amiloide e tau fosforilada. Cuidados paliativos são importantes nas fases avançadas. O diagnóstico definitivo só é possível post-mortem."
+            },
+            "depressão": {
+                definition: "Transtorno de humor caracterizado por tristeza persistente, anedonia e alterações somáticas e cognitivas que afetam significativamente a capacidade funcional do indivíduo.",
+                symptoms: "Humor deprimido na maior parte do dia, perda de interesse ou prazer, alterações no sono e apetite, fadiga, sentimentos de inutilidade ou culpa excessiva, dificuldade de concentração, pensamentos recorrentes de morte ou suicídio.",
+                diagnosis: "Avaliação clínica segundo critérios diagnósticos (DSM-5, CID-11), escalas de avaliação (Hamilton, Beck, PHQ-9), exclusão de causas orgânicas (hipotireoidismo, anemia, etc.).",
+                treatment: "Psicoterapia (TCC, interpessoal), antidepressivos (ISRS, IRSN, tricíclicos, outros), eletroconvulsoterapia em casos refratários ou graves, estimulação magnética transcraniana, atividade física regular.",
+                observations: "Doença subdiagnosticada e subtratada. Resposta ao tratamento geralmente demora 2-4 semanas. Risco de suicídio deve ser sempre avaliado. Abordagem multidisciplinar melhora resultados. Comorbidades são comuns (ansiedade, uso de substâncias)."
+            },
+            "epilepsia": {
+                definition: "Distúrbio neurológico crônico caracterizado pela predisposição a crises epilépticas recorrentes devido à atividade elétrica anormal no cérebro.",
+                symptoms: "Variam conforme o tipo de crise: convulsões tônico-clônicas, ausências, crises focais com alteração da consciência, auras, mioclonias, crises atônicas.",
+                diagnosis: "História clínica detalhada, descrição de testemunhas, EEG (ictal e interictal), vídeo-EEG em casos selecionados, neuroimagem (RM cerebral), exames laboratoriais para causas secundárias.",
+                treatment: "Anticonvulsivantes em monoterapia inicialmente, politerapia em casos refratários. Cirurgia em epilepsias focais refratárias. Estimulação do nervo vago, dieta cetogênica, neuromodulação em casos selecionados.",
+                observations: "Controle de fatores desencadeantes (privação de sono, estresse, álcool). Orientações sobre direção, natação, trabalho em altura. SUDEP (morte súbita em epilepsia) é rara mas importante causa de mortalidade."
+            }
+        };
+
+        // API simulada para pesquisa médica ilimitada
+        const fetchMedicalInfo = async (query) => {
+            // Simulação de chamada API
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // Verifica se existe um termo médico correspondente no banco de dados
+                    for (const [term, info] of Object.entries(medicalDatabase)) {
+                        if (term.includes(query.toLowerCase()) || query.toLowerCase().includes(term)) {
+                            resolve({
+                                type: 'term',
+                                term: term,
+                                data: info
+                            });
+                            return;
+                        }
+                    }
+                    
+                    // Se não encontrar um termo exato, gera uma resposta mais ampla baseada em palavras-chave
+                    if (query.toLowerCase().includes('febre') || query.toLowerCase().includes('dor')) {
+                        resolve({
+                            type: 'response',
+                            data: `A ${query} pode estar relacionada a diferentes condições médicas. Sintomas como febre e dor podem indicar processos infecciosos, inflamatórios ou até mesmo condições mais graves. Recomenda-se uma avaliação médica para diagnóstico preciso.`
+                        });
+                    } else if (query.toLowerCase().includes('tratamento') || query.toLowerCase().includes('medicamento')) {
+                        resolve({
+                            type: 'response',
+                            data: `Para informações sobre tratamento ou medicamentos para ${query}, é necessário um diagnóstico médico adequado. A automedicação pode mascarar sintomas ou causar efeitos adversos. Consulte um profissional de saúde.`
+                        });
+                    } else if (query.toLowerCase().includes('exame') || query.toLowerCase().includes('diagnóstico')) {
+                        resolve({
+                            type: 'response',
+                            data: `Os exames e métodos diagnósticos para ${query} dependem da suspeita clínica. Podem incluir exames laboratoriais, de imagem ou procedimentos específicos. Um médico poderá indicar os mais apropriados para seu caso.`
+                        });
+                    } else {
+                        resolve({
+                            type: 'response',
+                            data: `Não foi possível encontrar informações específicas sobre "${query}". Para informações médicas precisas, recomendamos consultar um profissional de saúde ou literaturas médicas confiáveis.`
+                        });
+                    }
+                }, 500); // Simula o tempo de resposta da API
+            });
+        };
+
+        // Banco de dados do Quiz com mais perguntas
+        const quizQuestions = [
+            {
+                question: "Qual é o principal vetor de transmissão da dengue?",
+                options: ["Aedes aegypti", "Anopheles", "Culex", "Tsetse"],
+                correctAnswer: 0
+            },
+            {
+                question: "Qual das seguintes condições NÃO é uma complicação comum do diabetes mellitus não controlado?",
+                options: ["Retinopatia", "Nefropatia", "Hepatite", "Neuropatia periférica"],
+                correctAnswer: 2
+            },
+            {
+                question: "Qual medicamento é contraindicado para pacientes com suspeita de dengue?",
+                options: ["Paracetamol", "Dipirona", "Ácido acetilsalicílico (AAS)", "Morfina"],
+                correctAnswer: 2
+            },
+            {
+                question: "Qual é o agente causador da tuberculose?",
+                options: ["Staphylococcus aureus", "Streptococcus pneumoniae", "Mycobacterium tuberculosis", "Haemophilus influenzae"],
+                correctAnswer: 2
+            },
+            {
+                question: "Qual é a classificação de um paciente adulto com IMC de 32 kg/m²?",
+                options: ["Peso normal", "Sobrepeso", "Obesidade grau I", "Obesidade grau II"],
+                correctAnswer: 2
+            },
+            {
+                question: "Qual dos seguintes NÃO é um sinal de alerta para dengue grave?",
+                options: ["Dor abdominal intensa", "Vômitos persistentes", "Sangramento de mucosas", "Febre baixa"],
+                correctAnswer: 3
+            },
+            {
+                question: "Qual dos seguintes anti-hipertensivos é contraindicado na gravidez?",
+                options: ["Metildopa", "Nifedipina", "Inibidores da ECA", "Labetalol"],
+                correctAnswer: 2
+            },
+            {
+                question: "Qual é o principal agente etiológico da malária grave?",
+                options: ["Plasmodium vivax", "Plasmodium falciparum", "Plasmodium malariae", "Plasmodium ovale"],
+                correctAnswer: 1
+            },
+            {
+                question: "Em relação ao diabetes mellitus tipo 1, qual afirmação é VERDADEIRA?",
+                options: ["Geralmente tem início insidioso na idade adulta", "É causado principalmente por resistência à insulina", "Tratamento inicial é com metformina", "Resulta da destruição autoimune das células beta pancreáticas"],
+                correctAnswer: 3
+            },
+            {
+                question: "Qual é a primeira escolha para tratamento farmacológico da hipertensão em um paciente com diabetes e microalbuminúria?",
+                options: ["Betabloqueadores", "Bloqueadores dos canais de cálcio", "Inibidores da ECA ou BRA", "Diuréticos tiazídicos"],
+                correctAnswer: 2
+            },
+            {
+                question: "Qual é o tratamento de primeira linha para a depressão maior?",
+                options: ["Benzodiazepínicos", "Antipsicóticos", "Inibidores Seletivos da Recaptação de Serotonina (ISRS)", "Estabilizadores de humor"],
+                correctAnswer: 2
+            },
+            {
+                question: "Qual exame é considerado padrão-ouro para o diagnóstico de tromboembolismo pulmonar?",
+                options: ["Radiografia de tórax", "D-dímero", "Angiotomografia pulmonar", "Cintilografia V/Q"],
+                correctAnswer: 2
+            },
+            {
+                question: "Qual dos seguintes NÃO é um critério diagnóstico para Síndrome Metabólica segundo o NCEP ATP III?",
+                options: ["Circunferência abdominal aumentada", "Triglicérides elevados", "Hiperglicemia de jejum", "Níveis elevados de ácido úrico"],
+                correctAnswer: 3
+            },
+            {
+                question: "Qual é o principal mecanismo de ação da aspirina na prevenção de eventos cardiovasculares?",
+                options: ["Inibição da agregação plaquetária", "Vasodilatação coronariana", "Redução dos níveis de colesterol", "Bloqueio dos canais de cálcio"],
+                correctAnswer: 0
+            },
+            {
+                question: "Qual é o patógeno mais comum nas infecções do trato urinário não complicadas?",
+                options: ["Staphylococcus saprophyticus", "Escherichia coli", "Klebsiella pneumoniae", "Enterococcus faecalis"],
+                correctAnswer: 1
+            }
+        ];
+
+        // Banco de dados das histórias clínicas (inicialmente vazio)
+        let savedHistories = [];
+
+        // Usuários (simulação de banco de dados)
+        let users = [];
+        let currentUser = null;
+
+        // Elementos DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navegação
+            const logoHome = document.getElementById('logoHome');
+            const menuToggle = document.getElementById('menuToggle');
+            const mainNav = document.getElementById('mainNav');
+            const navItems = document.querySelectorAll('.nav-item');
+            const featureCards = document.querySelectorAll('.feature-card');
+            const mainSections = document.querySelectorAll('main');
+            
+            // Botões de voltar
+            const quizBackBtn = document.getElementById('quizBackBtn');
+            const calculatorBackBtn = document.getElementById('calculatorBackBtn');
+            const historyBackBtn = document.getElementById('historyBackBtn');
+
+            // Login e cadastro
+            const loginBtn = document.getElementById('loginBtn');
+            const loginModal = document.getElementById('loginModal');
+            const closeLoginModal = document.getElementById('closeLoginModal');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const showRegisterForm = document.getElementById('showRegisterForm');
+            const showLoginForm = document.getElementById('showLoginForm');
+            const submitLogin = document.getElementById('submitLogin');
+            const submitRegister = document.getElementById('submitRegister');
+
+            // Tema e idioma
+            const themeToggle = document.getElementById('themeToggle');
+            const languageSelector = document.getElementById('languageSelector');
+
+            // Pesquisa médica
+            const medicalSearch = document.getElementById('medicalSearch');
+            const searchResults = document.getElementById('searchResults');
+
+            // Quiz
+            const quizOptions = document.getElementById('quizOptions');
+            const questionText = document.getElementById('questionText');
+            const nextQuestion = document.getElementById('nextQuestion');
+            const quizProgress = document.getElementById('quizProgress');
+            let currentQuestionIndex = 0;
+            let score = 0;
+
+            // Calculadora
+            const calculatorTabs = document.querySelectorAll('.calculator-tab');
+            const calculatorContents = document.querySelectorAll('.calculator-content');
+            const calculateImc = document.getElementById('calculateImc');
+            const calculateDosage = document.getElementById('calculateDosage');
+            const imcResult = document.getElementById('imcResult');
+            const dosageResult = document.getElementById('dosageResult');
+
+            // História Clínica
+            const generateDiagnosis = document.getElementById('generateDiagnosis');
+            const saveHistory = document.getElementById('saveHistory');
+            const diagnosisResults = document.getElementById('diagnosisResults');
+            const historiesList = document.getElementById('historiesList');
+            const historyViewModal = document.getElementById('historyViewModal');
+            const closeHistoryViewModal = document.getElementById('closeHistoryViewModal');
+            const historyViewContent = document.getElementById('historyViewContent');
+
+            // Funções de navegação
+            function showSection(sectionId) {
+                mainSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                document.getElementById(sectionId).style.display = 'block';
+                
+                // Atualizando URL com hash para permitir navegação por histórico
+                if (sectionId !== 'landingPage') {
+                    window.location.hash = sectionId;
+                } else {
+                    history.pushState("", document.title, window.location.pathname);
+                }
+            }
+
+            // Implementação do logo como botão home
+            logoHome.addEventListener('click', () => {
+                showSection('landingPage');
+            });
+
+            menuToggle.addEventListener('click', () => {
+                mainNav.classList.toggle('active');
+            });
+
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const target = item.getAttribute('data-target');
+                    showSection(target);
+                    mainNav.classList.remove('active');
+                });
+            });
+
+            featureCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const target = card.getAttribute('data-target');
+                    showSection(target);
+                });
+            });
+            
+            // Funcionalidade dos botões de voltar
+            quizBackBtn.addEventListener('click', () => {
+                showSection('landingPage');
+            });
+            
+            calculatorBackBtn.addEventListener('click', () => {
+                showSection('landingPage');
+            });
+            
+            historyBackBtn.addEventListener('click', () => {
+                showSection('landingPage');
+            });
+
+            // Funções de Login/Cadastro
+            loginBtn.addEventListener('click', () => {
+                loginModal.style.display = 'flex';
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            });
+
+            closeLoginModal.addEventListener('click', () => {
+                loginModal.style.display = 'none';
+            });
+
+            showRegisterForm.addEventListener('click', (e) => {
+                e.preventDefault();
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            });
+
+            showLoginForm.addEventListener('click', (e) => {
+                e.preventDefault();
+                registerForm.style.display = 'none';
+                loginForm.style.display = 'block';
+            });
+
+            submitLogin.addEventListener('click', () => {
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+
+                // Simulação de autenticação
+                const user = users.find(u => u.email === email && u.password === password);
+                if (user) {
+                    currentUser = user;
+                    loginBtn.textContent = user.name;
+                    loginModal.style.display = 'none';
+                    alert('Login realizado com sucesso!');
+                } else {
+                    alert('Email ou senha incorretos.');
+                }
+            });
+
+            submitRegister.addEventListener('click', () => {
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+
+                // Validações
+                if (!name || !email || !password || !confirmPassword) {
+                    alert('Por favor, preencha todos os campos.');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    alert('As senhas não coincidem.');
+                    return;
+                }
+
+                if (users.some(u => u.email === email)) {
+                    alert('Este email já está cadastrado.');
+                    return;
+                }
+
+                // Cadastro de usuário
+                const newUser = { name, email, password };
+                users.push(newUser);
+                currentUser = newUser;
+                loginBtn.textContent = name;
+                loginModal.style.display = 'none';
+                alert('Cadastro realizado com sucesso!');
+            });
+
+            // Tema e Idioma
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                themeToggle.textContent = document.body.classList.contains('dark-mode') ? '🌙' : '☀️';
+            });
+
+            languageSelector.addEventListener('change', () => {
+                const lang = languageSelector.value;
+                updateLanguage(lang);
+            });
+
+            function updateLanguage(lang) {
+                const elements = document.querySelectorAll('[data-lang]');
+                elements.forEach(element => {
+                    const key = element.getAttribute('data-lang');
+                    if (translations[lang] && translations[lang][key]) {
+                        if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                            element.placeholder = translations[lang][key];
+                        } else {
+                            element.textContent = translations[lang][key];
+                        }
+                    }
+                });
+            }
+
+            // Pesquisa médica com API simulada
+            medicalSearch.addEventListener('input', async () => {
+                const searchTerm = medicalSearch.value.toLowerCase().trim();
+                if (searchTerm.length > 2) {
+                    searchResults.innerHTML = '<p>Pesquisando...</p>';
+                    searchResults.style.display = 'block';
+                    
+                    try {
+                        const result = await fetchMedicalInfo(searchTerm);
+                        
+                        if (result.type === 'term') {
+                            const term = result.term;
+                            const info = result.data;
+                            searchResults.innerHTML = `
+                                <h3>${term.charAt(0).toUpperCase() + term.slice(1)}</h3>
+                                <p><strong>Definição:</strong> ${info.definition}</p>
+                                <p><strong>Sinais e Sintomas:</strong> ${info.symptoms}</p>
+                                <p><strong>Diagnóstico:</strong> ${info.diagnosis}</p>
+                                <p><strong>Tratamento:</strong> ${info.treatment}</p>
+                                <p><strong>Observações:</strong> ${info.observations}</p>
+                            `;
+                        } else {
+                            searchResults.innerHTML = `<p>${result.data}</p>`;
+                        }
+                    } catch (error) {
+                        searchResults.innerHTML = "<p>Erro ao buscar informações. Por favor, tente novamente.</p>";
+                    }
+                } else {
+                    searchResults.style.display = 'none';
+                }
+            });
+
+            // Quiz
+            function loadQuestion(index) {
+                if (index >= quizQuestions.length) {
+                    // Quiz finalizado
+                    questionText.textContent = `Quiz finalizado! Sua pontuação: ${score}/${quizQuestions.length}`;
+                    quizOptions.innerHTML = '';
+                    nextQuestion.textContent = 'Reiniciar';
+                    nextQuestion.onclick = () => {
+                        currentQuestionIndex = 0;
+                        score = 0;
+                        loadQuestion(0);
+                    };
+                    return;
+                }
+
+                const question = quizQuestions[index];
+                questionText.textContent = question.question;
+                quizOptions.innerHTML = '';
+                quizProgress.textContent = `Pergunta ${index + 1}/${quizQuestions.length}`;
+
+                question.options.forEach((option, i) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'quiz-option';
+                    optionElement.textContent = option;
+                    optionElement.onclick = () => {
+                        // Verifica resposta
+                        const options = document.querySelectorAll('.quiz-option');
+                        options.forEach(opt => {
+                            opt.style.pointerEvents = 'none'; // Desabilita cliques
+                        });
+
+                        if (i === question.correctAnswer) {
+                            optionElement.classList.add('correct');
+                            score++;
+                        } else {
+                            optionElement.classList.add('incorrect');
+                            options[question.correctAnswer].classList.add('correct');
+                        }
+
+                        // Habilita botão próxima pergunta
+                        nextQuestion.disabled = false;
+                    };
+                    quizOptions.appendChild(optionElement);
+                });
+
+                nextQuestion.disabled = false;
+                nextQuestion.onclick = () => {
+                    currentQuestionIndex++;
+                    loadQuestion(currentQuestionIndex);
+                };
+            }
+
+            // Inicia o quiz
+            loadQuestion(currentQuestionIndex);
+
+            // Calculadora
+            calculatorTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    calculatorTabs.forEach(t => t.classList.remove('active'));
+                    calculatorContents.forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById(tabId + 'Calculator').classList.add('active');
+                });
+            });
+
+            calculateImc.addEventListener('click', () => {
+                const weight = parseFloat(document.getElementById('weight').value);
+                const height = parseFloat(document.getElementById('height').value) / 100; // cm para m
+
+                if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
+                    imcResult.textContent = 'Por favor, insira valores válidos.';
+                    return;
+                }
+
+                const imc = weight / (height * height);
+                let classification = '';
+
+                if (imc < 18.5) {
+                    classification = 'Abaixo do peso';
+                } else if (imc < 25) {
+                    classification = 'Peso normal';
+                } else if (imc < 30) {
+                    classification = 'Sobrepeso';
+                } else if (imc < 35) {
+                    classification = 'Obesidade grau I';
+                } else if (imc < 40) {
+                    classification = 'Obesidade grau II';
+                } else {
+                    classification = 'Obesidade grau III';
+                }
+
+                imcResult.innerHTML = `<p>IMC: ${imc.toFixed(2)}</p><p>Classificação: ${classification}</p>`;
+            });
+
+            calculateDosage.addEventListener('click', () => {
+                const medication = document.getElementById('medication').value;
+                const weight = parseFloat(document.getElementById('patientWeight').value);
+                const age = parseInt(document.getElementById('patientAge').value);
+
+                if (isNaN(weight) || isNaN(age) || weight <= 0 || age < 0) {
+                    dosageResult.textContent = 'Por favor, insira valores válidos.';
+                    return;
+                }
+
+                let dosage = '';
+                let instructions = '';
+
+                // Cálculo de dosagem fictício (para demonstração)
+                switch(medication) {
+                    case 'paracetamol':
+                        if (age < 12) {
+                            dosage = `${(10 * weight).toFixed(0)}-${(15 * weight).toFixed(0)} mg a cada 6-8 horas`;
+                            instructions = 'Não exceder 5 doses em 24 horas. Dose máxima diária: 60 mg/kg.';
+                        } else {
+                            dosage = '500-1000 mg a cada 6-8 horas';
+                            instructions = 'Não exceder 4g por dia.';
+                        }
+                        break;
+                    case 'ibuprofen':
+                        if (age < 12) {
+                            dosage = `${(5 * weight).toFixed(0)}-${(10 * weight).toFixed(0)} mg a cada 6-8 horas`;
+                            instructions = 'Administrar com alimentos. Dose máxima diária: 40 mg/kg.';
+                        } else {
+                            dosage = '200-400 mg a cada 6-8 horas';
+                            instructions = 'Administrar com alimentos. Não exceder 3200 mg por dia.';
+                        }
+                        break;
+                    case 'amoxicillin':
+                        if (age < 12) {
+                            dosage = `${(20 * weight).toFixed(0)}-${(40 * weight).toFixed(0)} mg a cada 8 horas`;
+                            instructions = 'Para infecções graves, a dose pode ser aumentada até 90 mg/kg/dia.';
+                        } else {
+                            dosage = '500 mg a cada 8 horas';
+                            instructions = 'Para infecções graves, 1g a cada 8 horas.';
+                        }
+                        break;
+                }
+
+                dosageResult.innerHTML = `
+                    <p><strong>Dosagem recomendada:</strong> ${dosage}</p>
+                    <p><strong>Instruções:</strong> ${instructions}</p>
+                `;
+            });
+
+            // História Clínica com API de diagnóstico
+            generateDiagnosis.addEventListener('click', async () => {
+                const mainComplaint = document.getElementById('mainComplaint').value;
+                const currentIllness = document.getElementById('currentIllness').value;
+                const pastHistory = document.getElementById('pastHistory').value;
+                const familyHistory = document.getElementById('familyHistory').value;
+                const personalHistory = document.getElementById('personalHistory').value;
+                
+                if (!mainComplaint || !currentIllness) {
+                    alert('Por favor, preencha pelo menos a Queixa Principal e a História da Doença Atual.');
+                    return;
+                }
+
+                // Preparando os dados para a análise de diagnóstico
+                diagnosisResults.style.display = 'none';
+                document.getElementById('provisionalDiagnosis').textContent = "Analisando...";
+                document.getElementById('definitiveDiagnosis').textContent = "Analisando...";
+                document.getElementById('differentialDiagnosis').textContent = "Analisando...";
+                document.getElementById('diagnosticAids').textContent = "Analisando...";
+                document.getElementById('treatment').textContent = "Analisando...";
+                diagnosisResults.style.display = 'block';
+
+                try {
+                    // Simulação de análise completa dos dados clínicos
+                    // Em um sistema real, isso seria feito por uma API de diagnóstico médico
+                    
+                    // Combinando todos os dados para análise
+                    const clinicalData = [
+                        mainComplaint, 
+                        currentIllness, 
+                        pastHistory || "", 
+                        familyHistory || "", 
+                        personalHistory || ""
+                    ].join(" ").toLowerCase();
+                    
+                    let provisionalDiagnosis, definitiveDiagnosis, differentialDiagnosis, diagnosticAids, treatment;
+                    
+                    // Análise baseada em palavras-chave para simulação
+                    // Febre + dor de cabeça/corpo -> possível infecção viral
+                    if ((clinicalData.includes('febre') || clinicalData.includes('temperatura')) && 
+                        (clinicalData.includes('dor de cabeça') || clinicalData.includes('cefaleia') || 
+                         clinicalData.includes('dor no corpo') || clinicalData.includes('mialgia'))) {
+                        
+                        if (clinicalData.includes('manchas') || clinicalData.includes('erupção')) {
+                            provisionalDiagnosis = "Síndrome febril exantemática. Possível dengue ou chikungunya.";
+                            definitiveDiagnosis = "Pendente de exames complementares";
+                            differentialDiagnosis = "Dengue, Chikungunya, Zika, Sarampo, Rubéola, Reação medicamentosa";
+                            diagnosticAids = "Hemograma completo, Sorologia para arboviroses, PCR, Função hepática, Função renal";
+                            treatment = "Hidratação oral ou venosa conforme necessidade, Antitérmicos (Paracetamol), Repouso, Evitar AINEs, Retorno imediato se sinais de alarme";
+                        } else if (clinicalData.includes('tosse') || clinicalData.includes('coriza') || clinicalData.includes('espirro')) {
+                            provisionalDiagnosis = "Síndrome gripal";
+                            definitiveDiagnosis = "Pendente de evolução clínica e exames";
+                            differentialDiagnosis = "Influenza, COVID-19, Resfriado comum, Sinusite";
+                            diagnosticAids = "Teste rápido para COVID-19, PCR para vírus respiratórios, Radiografia de tórax se sintomas respiratórios graves";
+                            treatment = "Sintomáticos (Paracetamol), Hidratação, Repouso, Isolamento social, Oseltamivir se indicado";
+                        } else {
+                            provisionalDiagnosis = "Síndrome febril a esclarecer";
+                            definitiveDiagnosis = "Pendente de exames complementares";
+                            differentialDiagnosis = "Infecção viral, Infecção bacteriana, Doença inflamatória";
+                            diagnosticAids = "Hemograma completo, PCR, VHS, Hemocultura, Urina tipo I";
+                            treatment = "Hidratação, Antitérmicos, Reavaliação em 24-48h ou antes se piora";
+                        }
+                    } 
+                    // Dor abdominal -> possíveis problemas gastrointestinais
+                    else if (clinicalData.includes('dor') && (clinicalData.includes('abdomen') || clinicalData.includes('barriga') || clinicalData.includes('estômago'))) {
+                        if (clinicalData.includes('vômito') || clinicalData.includes('náusea') || clinicalData.includes('enjôo')) {
+                            provisionalDiagnosis = "Gastroenterite aguda";
+                            definitiveDiagnosis = "Pendente de evolução e exames";
+                            differentialDiagnosis = "Gastroenterite viral/bacteriana, Intoxicação alimentar, Apendicite, Colecistite";
+                            diagnosticAids = "Hemograma, Função hepática, Lipase/Amilase, Ultrassonografia abdominal se dor persistente";
+                            treatment = "Hidratação, Antieméticos se necessário, Protetores gástricos, Dieta leve";
+                        } else if (clinicalData.includes('diarreia')) {
+                            provisionalDiagnosis = "Gastroenterocolite aguda";
+                            definitiveDiagnosis = "Pendente de exames";
+                            differentialDiagnosis = "Infecção intestinal, Intolerância alimentar, Doença inflamatória intestinal";
+                            diagnosticAids = "Coprocultura, Parasitológico de fezes, Pesquisa de toxinas de C. difficile se histórico de antibioticoterapia";
+                            treatment = "Hidratação, Probióticos, Antidiarreicos com cautela, Investigar fontes alimentares";
+                        } else {
+                            provisionalDiagnosis = "Dor abdominal a esclarecer";
+                            definitiveDiagnosis = "Pendente de avaliação complementar";
+                            differentialDiagnosis = "Dispepsia, Doença ulcerosa péptica, Síndrome do intestino irritável, Patologia biliar";
+                            diagnosticAids = "Endoscopia digestiva alta, Ultrassonografia abdominal, Exames laboratoriais básicos";
+                            treatment = "Inibidores de bomba de prótons, Antiespasmódicos, Orientações dietéticas";
+                        }
+                    }
+                    // Dor torácica -> possíveis problemas cardiovasculares ou respiratórios
+                    else if (clinicalData.includes('dor') && (clinicalData.includes('torácica') || clinicalData.includes('peito') || clinicalData.includes('tórax'))) {
+                        if (clinicalData.includes('falta de ar') || clinicalData.includes('dispneia') || clinicalData.includes('respiração')) {
+                            provisionalDiagnosis = "Dor torácica com dispneia - investigar etiologia cardiopulmonar";
+                            definitiveDiagnosis = "Pendente de exames";
+                            differentialDiagnosis = "Síndrome coronariana aguda, Tromboembolismo pulmonar, Pneumonia, Pericardite, Pneumotórax";
+                            diagnosticAids = "ECG, Troponina, D-dímero, Radiografia de tórax, Ecocardiograma";
+                            treatment = "Oxigenoterapia se hipoxemia, Analgesia, Abordagem específica conforme etiologia";
+                        } else if (clinicalData.includes('palpitação') || clinicalData.includes('coração acelerado')) {
+                            provisionalDiagnosis = "Dor torácica com palpitações - suspeita de arritmia";
+                            definitiveDiagnosis = "Pendente de avaliação cardíaca";
+                            differentialDiagnosis = "Taquiarritmia, Síndrome coronariana, Ansiedade, Hipertireoidismo";
+                            diagnosticAids = "ECG, Holter 24h, Ecocardiograma, Função tireoidiana";
+                            treatment = "Controle de frequência cardíaca, Investigação etiológica, Tratamento específico após diagnóstico";
+                        } else {
+                            provisionalDiagnosis = "Dor torácica a esclarecer";
+                            definitiveDiagnosis = "Pendente de investigação";
+                            differentialDiagnosis = "Origem musculoesquelética, Refluxo gastroesofágico, Ansiedade, Origem cardiovascular";
+                            diagnosticAids = "ECG, Radiografia de tórax, Exames laboratoriais básicos";
+                            treatment = "Analgésicos, Avaliação de fatores de risco cardiovascular";
+                        }
+                    }
+                    // Cefaleia -> possíveis tipos de dor de cabeça
+                    else if (clinicalData.includes('dor de cabeça') || clinicalData.includes('cefaleia')) {
+                        if (clinicalData.includes('enxaqueca') || clinicalData.includes('aura') || clinicalData.includes('vômito')) {
+                            provisionalDiagnosis = "Enxaqueca";
+                            definitiveDiagnosis = "Baseado na história clínica típica";
+                            differentialDiagnosis = "Cefaleia tensional, Cefaleia em salvas, Neuralgia do trigêmeo";
+                            diagnosticAids = "Diagnóstico clínico, Neuroimagem apenas se apresentação atípica ou sinais de alarme";
+                            treatment = "Analgésicos, Antieméticos, Triptanos para crises, Profilaxia se crises frequentes, Evitar gatilhos";
+                        } else if (clinicalData.includes('tensão') || clinicalData.includes('estresse') || clinicalData.includes('pressão')) {
+                            provisionalDiagnosis = "Cefaleia tensional";
+                            definitiveDiagnosis = "Baseado em critérios clínicos";
+                            differentialDiagnosis = "Enxaqueca sem aura, Cefaleia por uso excessivo de medicamentos";
+                            diagnosticAids = "Diagnóstico clínico, Exames complementares apenas se sinais de alarme";
+                            treatment = "Analgésicos comuns, Técnicas de relaxamento, Fisioterapia, Manejo do estresse";
+                        } else if (clinicalData.includes('súbita') || clinicalData.includes('intensa') || clinicalData.includes('pior da vida')) {
+                            provisionalDiagnosis = "Cefaleia súbita intensa - emergência neurológica";
+                            definitiveDiagnosis = "Pendente de investigação urgente";
+                            differentialDiagnosis = "Hemorragia subaracnóidea, Dissecção arterial, Trombose venosa cerebral, Meningite";
+                            diagnosticAids = "TC de crânio urgente, Punção lombar se TC normal, Angiografia cerebral";
+                            treatment = "Monitorização neurológica, Analgesia, Abordagem específica conforme etiologia";
+                        } else {
+                            provisionalDiagnosis = "Cefaleia a esclarecer";
+                            definitiveDiagnosis = "Pendente de avaliação complementar";
+                            differentialDiagnosis = "Cefaleia primária (tensional, enxaqueca), Cefaleia secundária (sinusite, hipertensão, tumor)";
+                            diagnosticAids = "Avaliação clínica, Exames complementares se sinais de alarme ou persistência";
+                            treatment = "Analgésicos, Diário de cefaleia, Investigação de fatores desencadeantes";
+                        }
+                    }
+                    // Tosse -> possíveis problemas respiratórios
+                    else if (clinicalData.includes('tosse')) {
+                        if (clinicalData.includes('catarro') || clinicalData.includes('expectoração') || clinicalData.includes('secreção')) {
+                            provisionalDiagnosis = "Infecção respiratória com secreção";
+                            definitiveDiagnosis = "Pendente de avaliação complementar";
+                            differentialDiagnosis = "Bronquite aguda, Pneumonia, Sinusite com gotejamento pós-nasal, DPOC exacerbada";
+                            diagnosticAids = "Radiografia de tórax, Hemograma, Cultura de escarro se necessário";
+                            treatment = "Hidratação, Mucolíticos, Antibióticos se indicado, Broncodilatadores se broncoespasmo";
+                        } else if (clinicalData.includes('seca') || clinicalData.includes('irritativa')) {
+                            provisionalDiagnosis = "Tosse seca/irritativa";
+                            definitiveDiagnosis = "Pendente de avaliação";
+                            differentialDiagnosis = "Infecção viral, Asma, Refluxo gastroesofágico, Efeito adverso de medicamentos (ex: IECA)";
+                            diagnosticAids = "Radiografia de tórax, Espirometria, pHmetria esofágica se suspeita de refluxo";
+                            treatment = "Antitussígenos, Corticosteroides inalatórios se componente alérgico/hiperreatividade";
+                        } else if (clinicalData.includes('sangue') || clinicalData.includes('hemoptise')) {
+                            provisionalDiagnosis = "Hemoptise - investigar etiologia";
+                            definitiveDiagnosis = "Pendente de investigação urgente";
+                            differentialDiagnosis = "Bronquite, Tuberculose, Câncer pulmonar, Bronquiectasias, TEP";
+                            diagnosticAids = "Radiografia e TC de tórax, Broncoscopia, Pesquisa de BAAR no escarro";
+                            treatment = "Controle do sangramento, Investigação urgente da causa, Tratamento específico";
+                        } else {
+                            provisionalDiagnosis = "Tosse a esclarecer";
+                            definitiveDiagnosis = "Pendente de avaliação";
+                            differentialDiagnosis = "Infecção respiratória, Asma, DPOC, Refluxo, Uso de medicamentos";
+                            diagnosticAids = "Radiografia de tórax, Hemograma, Avaliação de função pulmonar";
+                            treatment = "Sintomáticos, Investigação etiológica, Tratamento específico após diagnóstico";
+                        }
+                    }
+                    // Diagnóstico genérico para outros casos
+                    else {
+                        provisionalDiagnosis = "Condição a esclarecer";
+                        definitiveDiagnosis = "Pendente de avaliação complementar";
+                        differentialDiagnosis = "Múltiplas possibilidades a serem avaliadas baseadas na evolução clínica";
+                        diagnosticAids = "Exames laboratoriais básicos, Exames de imagem conforme sinais e sintomas, Avaliação seriada";
+                        treatment = "Sintomáticos, Acompanhamento clínico, Abordagem específica após conclusão diagnóstica";
+                    }
+
+                    // Exibir resultados
+                    document.getElementById('provisionalDiagnosis').textContent = provisionalDiagnosis;
+                    document.getElementById('definitiveDiagnosis').textContent = definitiveDiagnosis;
+                    document.getElementById('differentialDiagnosis').textContent = differentialDiagnosis;
+                    document.getElementById('diagnosticAids').textContent = diagnosticAids;
+                    document.getElementById('treatment').textContent = treatment;
+                    
+                } catch (error) {
+                    alert('Erro ao gerar diagnóstico. Por favor, tente novamente.');
+                    diagnosisResults.style.display = 'none';
+                }
+            });
+
+            saveHistory.addEventListener('click', () => {
+                const patientName = document.getElementById('patientName').value;
+                const patientAge = document.getElementById('patientAge2').value;
+                const patientGender = document.getElementById('patientGender').value;
+                const mainComplaint = document.getElementById('mainComplaint').value;
+                const currentIllness = document.getElementById('currentIllness').value;
+                const pastHistory = document.getElementById('pastHistory').value;
+                const familyHistory = document.getElementById('familyHistory').value;
+                const personalHistory = document.getElementById('personalHistory').value;
+
+                if (!patientName || !mainComplaint || !currentIllness) {
+                    alert('Por favor, preencha pelo menos o Nome do Paciente, Queixa Principal e História da Doença Atual.');
+                    return;
+                }
+
+                if (diagnosisResults.style.display === 'none') {
+                    alert('Por favor, gere um diagnóstico antes de salvar a história clínica.');
+                    return;
+                }
+
+                const provisionalDiagnosis = document.getElementById('provisionalDiagnosis').textContent;
+                const definitiveDiagnosis = document.getElementById('definitiveDiagnosis').textContent;
+                const differentialDiagnosis = document.getElementById('differentialDiagnosis').textContent;
+                const diagnosticAids = document.getElementById('diagnosticAids').textContent;
+                const treatment = document.getElementById('treatment').textContent;
+
+                const newHistory = {
+                    id: Date.now(),
+                    date: new Date().toLocaleDateString(),
+                    patientName,
+                    patientAge,
+                    patientGender,
+                    mainComplaint,
+                    currentIllness,
+                    pastHistory,
+                    familyHistory,
+                    personalHistory,
+                    provisionalDiagnosis,
+                    definitiveDiagnosis,
+                    differentialDiagnosis,
+                    diagnosticAids,
+                    treatment
+                };
+
+                savedHistories.push(newHistory);
+                updateHistoriesList();
+                alert('História clínica salva com sucesso!');
+                
+                // Limpar campos após salvar
+                document.getElementById('patientName').value = '';
+                document.getElementById('patientAge2').value = '';
+                document.getElementById('mainComplaint').value = '';
+                document.getElementById('currentIllness').value = '';
+                document.getElementById('pastHistory').value = '';
+                document.getElementById('familyHistory').value = '';
+                document.getElementById('personalHistory').value = '';
+                diagnosisResults.style.display = 'none';
+            });
+
+            function updateHistoriesList() {
+                historiesList.innerHTML = '';
+                
+                if (savedHistories.length === 0) {
+                    historiesList.innerHTML = '<p>Nenhuma história clínica salva ainda.</p>';
+                    return;
+                }
+
+                savedHistories.forEach(history => {
+                    const historyCard = document.createElement('div');
+                    historyCard.className = 'history-card';
+                    historyCard.innerHTML = `
+                        <h4>${history.patientName}</h4>
+                        <p>Data: ${history.date}</p>
+                        <p>Queixa Principal: ${history.mainComplaint.substring(0, 30)}${history.mainComplaint.length > 30 ? '...' : ''}</p>
+                    `;
+                    historyCard.onclick = () => {
+                        viewHistory(history);
+                    };
+                    historiesList.appendChild(historyCard);
+                });
+            }
+
+            function viewHistory(history) {
+                historyViewContent.innerHTML = `
+                    <div class="history-section">
+                        <h3>Identificação do Paciente</h3>
+                        <p><strong>Nome:</strong> ${history.patientName}</p>
+                        <p><strong>Idade:</strong> ${history.patientAge}</p>
+                        <p><strong>Gênero:</strong> ${history.patientGender}</p>
+                        <p><strong>Data:</strong> ${history.date}</p>
+                    </div>
+                    <div class="history-section">
+                        <h3>Queixa Principal</h3>
+                        <p>${history.mainComplaint}</p>
+                    </div>
+                    <div class="history-section">
+                        <h3>História da Doença Atual</h3>
+                        <p>${history.currentIllness}</p>
+                    </div>
+                    <div class="history-section">
+                        <h3>História Patológica Pregressa</h3>
+                        <p>${history.pastHistory || 'Não informado'}</p>
+                    </div>
+                    <div class="history-section">
+                        <h3>História Familiar</h3>
+                        <p>${history.familyHistory || 'Não informado'}</p>
+                    </div>
+                    <div class="history-section">
+                        <h3>História Pessoal</h3>
+                        <p>${history.personalHistory || 'Não informado'}</p>
+                    </div>
+                    <div class="history-section">
+                        <h3>Diagnóstico</h3>
+                        <p><strong>Diagnóstico Provisório:</strong> ${history.provisionalDiagnosis}</p>
+                        <p><strong>Diagnóstico Definitivo:</strong> ${history.definitiveDiagnosis}</p>
+                        <p><strong>Diagnóstico Diferencial:</strong> ${history.differentialDiagnosis}</p>
+                        <p><strong>Meios Auxiliares de Diagnóstico:</strong> ${history.diagnosticAids}</p>
+                        <p><strong>Tratamento:</strong> ${history.treatment}</p>
+                    </div>
+                `;
+                historyViewModal.style.display = 'flex';
+            }
+
+            closeHistoryViewModal.addEventListener('click', () => {
+                historyViewModal.style.display = 'none';
+            });
+            
+            // Manipulação do histórico do navegador para funcionalidade SPA
+            window.addEventListener('popstate', function(e) {
+                if (window.location.hash) {
+                    const targetId = window.location.hash.substring(1);
+                    if (document.getElementById(targetId)) {
+                        showSection(targetId);
+                    }
+                } else {
+                    showSection('landingPage');
+                }
+            });
+
+            // Verifica se há hash na URL ao carregar a página
+            if (window.location.hash) {
+                const targetId = window.location.hash.substring(1);
+                if (document.getElementById(targetId)) {
+                    showSection(targetId);
+                }
+            }
+
+            // Inicialização
+            updateLanguage('pt');
+            updateHistoriesList();
+        });
+    </script>
+</body>
+</html>
